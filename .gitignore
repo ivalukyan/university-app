@@ -1,8 +1,7 @@
 __pycache__
-.venv
-.idea
-/__pycahce__
+/__pycache__
 __pycache__/
+.idea
 .vscode
 
-.env
+/venv

@@ -27,9 +27,80 @@ async def read_user(request: Request):
     return templates.TemplateResponse("users/index_users.html", {'request': request})
 
 
+@router.post("/users")
+async def read_user(request: Request):
+    return templates.TemplateResponse("users/index_users.html", {'request': request})
+
+
+@router.get("/users/add")
+async def add_user(request: Request):
+    return templates.TemplateResponse("users/add_user.html", {'request': request})
+
+
+@router.post("/users/add")
+async def add_user(request: Request, fullname: Annotated[str, Form()], telegram_id: Annotated[str, Form()],
+                    auth: Annotated[str, Form()], superuser: Annotated[str, Form()]):
+    redirect_url = request.url_for("read_user")
+    return RedirectResponse(redirect_url)
+
+
+@router.get("/users/update")
+async def update_user(request: Request):
+    return templates.TemplateResponse("users/update_user.html", {'request': request})
+
+
+@router.post("/users/update")
+async def upadte_user(request: Request, fullname: Annotated[str, Form()], auth: Annotated[str, Form()],
+                      superuser: Annotated[str, Form()]):
+    redirect_url = request.url_for("read_user")
+    return RedirectResponse(redirect_url)
+
+
+@router.get("/users/delete")
+async def delete_user(request: Request):
+    redirect_url = request.url_for("read_user")
+    return RedirectResponse(redirect_url)
+
+
+
 @router.get("/tasks")
 async def read_tasks(request: Request):
     return templates.TemplateResponse("tasks/index_tasks.html", {'request': request})
+
+
+@router.post("/tasks")
+async def read_tasks(request: Request):
+    return templates.TemplateResponse("tasks/index_tasks.html", {'request': request})
+
+
+@router.get("/tasks/add")
+async def add_tasks(request: Request):
+    return templates.TemplateResponse("tasks/add_tasks.html", {'request': request})
+
+
+@router.post("/tasks/add")
+async def add_tasks(request: Request, subject: Annotated[str, Form()], type: Annotated[str, Form()],
+                    task: Annotated[str, Form()], date: Annotated[str, Form()]):
+    redirect_url = request.url_for("read_tasks")
+    return RedirectResponse(redirect_url)
+
+
+@router.get("/tasks/update")
+async def update_tasks(request: Request):
+    return templates.TemplateResponse("tasks/update_tasks.html", {'request': request})
+
+
+@router.post("/tasks/update")
+async def update_tasks(request: Request, subject: Annotated[str, Form()], type: Annotated[str, Form()],
+                       task: Annotated[str, Form()], date: Annotated[str, Form()]):
+    redirect_url = request.url_for("read_tasks")
+    return RedirectResponse(redirect_url)
+
+
+@router.get("/tasks/delete")
+async def delete_tasks(request: Request):
+    redirect_url = request.url_for("read_tasks")
+    return RedirectResponse(redirect_url)
 
 
 @router.get("/sends")
