@@ -7,7 +7,7 @@ from uuid import uuid4
 from sqlalchemy import Column, Integer, String, DateTime, UUID, Boolean, LargeBinary, BIGINT
 
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 #from env import Postgres
@@ -18,10 +18,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+Base = declarative_base()
+
 
 class Postgres:
     def __init__(self) -> None:
-        self.db = os.getenv('POSGRES_DB')
+        self.db = os.getenv('POSTGRES_DB')
         self.user = os.getenv('POSTGRES_USER')
         self.password = os.getenv('POSTGRES_PASSWORD')
         self.host = os.getenv('POSTGRES_HOST')
@@ -34,10 +36,7 @@ db_url = f"postgresql://{postgres.user}:{postgres.password}@{postgres.host}:{pos
 
 engine = create_engine(db_url, pool_pre_ping=True, pool_recycle=300)
 
-# engine = create_engine(connection_string)
 Session = sessionmaker(bind=engine)
-
-Base = declarative_base()
 
 
 

@@ -144,21 +144,23 @@
         <table class="table table-dark">
             <thead>
                 <th scope="col">Полное имя</th>
-                <th scope="col">Телеграмм ник</th>
+                <th scope="col">Телеграмм ID</th>
                 <th scope="col">Авторизация</th>
                 <th scope="col">Суперпользователь</th>
                 <th scope="col">Редактирование</th>
                 <th scope="col">Удаление</th>
             </thead>
             <tbody>
+                {% for el in data %}
                 <tr>
-                    <td aria-label="Полное имя">Иван</td>
-                    <td aria-label="Телеграмм ник">ivalkn</td>
-                    <td aria-label="Авторизация">Да</td>
-                    <td aria-label="Суперпользователь">Да</td>
-                    <td class="upd"><a href="/users/update" сlass="update-user">Редактировать</a></td>
-                    <td class="del"><a href="/users/delete" class="delete-user">Удалить</a></td>
+                    <td aria-label="Полное имя">{{ el.fullname }}</td>
+                    <td aria-label="Телеграмм ID">{{ el.telegram_id }}</td>
+                    <td aria-label="Авторизация">{{ el.auth }}</td>
+                    <td aria-label="Суперпользователь">{{ el.superuser }}</td>
+                    <td class="upd"><a href="/users/update/{{ el.id }}" сlass="update-user">Редактировать</a></td>
+                    <td class="del"><a href="/users/delete/{{ el.id }}" class="delete-user">Удалить</a></td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
