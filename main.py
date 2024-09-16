@@ -2,8 +2,9 @@ from fastapi import FastAPI, Request, APIRouter, HTTPException, Form
 from starlette.templating import Jinja2Templates
 from typing import Annotated
 from starlette.responses import RedirectResponse
-from database.db import Session, User
+from database.db import Session, User, Task
 from uuid import UUID
+from utils.translations import transform_for_cond
 
 
 app = FastAPI(
@@ -29,6 +30,7 @@ async def read_user(request: Request):
 
     db_session = Session()
     users = db_session.query(User).all()
+    users = await transform_for_cond(users)
 
     return templates.TemplateResponse("users/index_users.html", {'request': request, 'data': users})
 
@@ -38,6 +40,7 @@ async def read_user(request: Request):
 
     db_session = Session()
     users = db_session.query(User).all()
+    users = await transform_for_cond(users)
 
     return templates.TemplateResponse("users/index_users.html", {'request': request, 'data': users})
 
@@ -97,12 +100,20 @@ async def delete_user(request: Request, id: UUID):
 
 @router.get("/tasks")
 async def read_tasks(request: Request):
-    return templates.TemplateResponse("tasks/index_tasks.html", {'request': request})
+
+    db_session = Session()
+    tasks = db_session.query(Task).all()
+
+    return templates.TemplateResponse("tasks/index_tasks.html", {'request': request, 'data': tasks})
 
 
 @router.post("/tasks")
 async def read_tasks(request: Request):
-    return templates.TemplateResponse("tasks/index_tasks.html", {'request': request})
+
+    db_session = Session()
+    tasks = db_session.query(Task).all()
+
+    return templates.TemplateResponse("tasks/index_tasks.html", {'request': request, 'data': tasks})
 
 
 @router.get("/tasks/add")
@@ -113,37 +124,47 @@ async def add_tasks(request: Request):
 @router.post("/tasks/add")
 async def add_tasks(request: Request, subject: Annotated[str, Form()], type: Annotated[str, Form()],
                     task: Annotated[str, Form()], date: Annotated[str, Form()]):
+    
+    db_session = Session()
+    task = Task(subject=subject, type=type, task=task, date=date)
+    db_session.add(task)
+    db_session.commit()
 
     redirect_url = request.url_for("read_tasks")
     return RedirectResponse(redirect_url)
 
 
-@router.get("/tasks/update")
-async def update_tasks(request: Request):
-    return templates.TemplateResponse("tasks/update_tasks.html", {'request': request})
+@router.get("/tasks/update/{id}")
+async def update_tasks(request: Request, id: UUID):
+
+    db_session = Session()
+    task = db_session.query(Task).filter(Task.id == id).first()
+
+    return templates.TemplateResponse("tasks/update_tasks.html", {'request': request, 'task': task})
 
 
-@router.post("/tasks/update")
-async def update_tasks(request: Request, subject: Annotated[str, Form()], type: Annotated[str, Form()],
+@router.post("/tasks/update/{id}")
+async def update_tasks(request: Request, id: UUID, subject: Annotated[str, Form()], type: Annotated[str, Form()],
                        task: Annotated[str, Form()], date: Annotated[str, Form()]):
+    
+    db_session = Session()
+    db_session.query(Task).filter(Task.id == id).update({'subject': subject, 'type': type,
+                                                         'task': task, 'date': date})
+    db_session.commit()
+
     redirect_url = request.url_for("read_tasks")
     return RedirectResponse(redirect_url)
 
 
-@router.get("/tasks/delete")
-async def delete_tasks(request: Request):
+@router.get("/tasks/delete/{id}")
+async def delete_tasks(request: Request, id: UUID):
+
+    db_session = Session()
+    task = db_session.query(Task).filter(Task.id == id).first()
+    db_session.delete(task)
+    db_session.commit()
+
     redirect_url = request.url_for("read_tasks")
-    return RedirectResponse(redirect_url)
-
-
-@router.get("/sends")
-async def sends_message(request: Request):
-    return templates.TemplateResponse("sends/index_sends.html", {'request': request})
-
-
-@router.post("/sends")
-async def sends_message(request: Request, message: Annotated[str, Form()]):
-    redirect_url = request.url_for("home")
     return RedirectResponse(redirect_url)
 
 

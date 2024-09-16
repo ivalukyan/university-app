@@ -126,19 +126,19 @@
             <form method="post">
                 <div class="mb-3">
                     <label for="subject-id">Предмет</label>
-                    <input class="form-control" type="text" placeholder="Предмет" id="subject-id" name="subject">
+                    <input class="form-control" type="text" value="{{ task.subject }}" placeholder="{{ task.subject }}" id="subject-id" name="subject" required>
                 </div>
                 <div class="mb-3">
                     <label for="type-id">Тип</label>
-                    <input class="form-control" type="text" placeholder="Тип" id="type-id" name="type">
+                    <input class="form-control" type="text" value="{{ task.type }}" placeholder="{{ task.type }}" id="type-id" name="type" required>
                 </div>
                 <div class="mb-3">
                     <label for="task-id">Текст задания</label>
-                    <textarea class="form-control" id="task-id" name="task" placeholder="Ваше задание"></textarea>
+                    <textarea class="form-control" id="task-id" name="task" placeholder="{{ task.task }}" required>{{ task.task }}</textarea>
                 </div>
                 <div class="mb-3">
                     <label for="superuser-id">Дата задания</label>
-                    <input type="date" class="form-control" name="date" placeholder="Выберите дату">
+                    <input type="date" class="form-control" name="date" value="{{ task.date }}" placeholder="{{ task.date }}" required>
                 </div>
                 <button class="btn" type="submit">Добавить</button>
             </form>

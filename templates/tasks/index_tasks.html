@@ -151,14 +151,16 @@
                 <th scope="col">Удаление</th>
             </thead>
             <tbody>
+                {% for el in data %}
                 <tr>
-                    <td aria-label="Предмет">Математика</td>
-                    <td aria-label="Тип">Контрольная</td>
-                    <td aria-label="Задание">Подготовка к контрольной работе</td>
-                    <td aria-label="Дата">12-10-2024</td>
-                    <td class="upd"><a href="/tasks/update" сlass="update-user">Редактировать</a></td>
-                    <td class="del"><a href="/tasks/delete" class="delete-user">Удалить</a></td>
+                    <td aria-label="Предмет">{{ el.subject }}</td>
+                    <td aria-label="Тип">{{ el.type }}</td>
+                    <td aria-label="Задание">{{ el.task }}</td>
+                    <td aria-label="Дата">{{ el.date }}</td>
+                    <td class="upd"><a href="/tasks/update/{{ el.id }}" сlass="update-user">Редактировать</a></td>
+                    <td class="del"><a href="/tasks/delete/{{ el.id }}" class="delete-user">Удалить</a></td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

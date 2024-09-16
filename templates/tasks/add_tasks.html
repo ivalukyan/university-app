@@ -126,19 +126,19 @@
             <form method="post">
                 <div class="mb-3">
                     <label for="subject-id">Предмет</label>
-                    <input class="form-control" type="text" placeholder="Предмет" id="subject-id" name="subject">
+                    <input class="form-control" type="text" placeholder="Предмет" id="subject-id" name="subject" required>
                 </div>
                 <div class="mb-3">
                     <label for="type-id">Тип</label>
-                    <input class="form-control" type="text" placeholder="Тип" id="type-id" name="type">
+                    <input class="form-control" type="text" placeholder="Тип" id="type-id" name="type" required>
                 </div>
                 <div class="mb-3">
                     <label for="task-id">Текст задания</label>
-                    <textarea class="form-control" id="task-id" name="task" placeholder="Ваше задание"></textarea>
+                    <textarea class="form-control" id="task-id" name="task" placeholder="Ваше задание" required></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="superuser-id">Дата задания</label>
-                    <input type="date" class="form-control" name="date" placeholder="Выберите дату">
+                    <input type="date" class="form-control" name="date" placeholder="Выберите дату" required>
                 </div>
                 <button class="btn" type="submit">Добавить</button>
             </form>
