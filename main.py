@@ -5,6 +5,7 @@ from starlette.responses import RedirectResponse
 from database.db import Session, User, Task
 from uuid import UUID
 from utils.translations import transform_for_cond
+from utils.util import conf_date
 
 
 app = FastAPI(
@@ -126,7 +127,7 @@ async def add_tasks(request: Request, subject: Annotated[str, Form()], type: Ann
                     task: Annotated[str, Form()], date: Annotated[str, Form()]):
     
     db_session = Session()
-    task = Task(subject=subject, type=type, task=task, date=date)
+    task = Task(subject=subject, type=type, task=task, date=await conf_date(date))
     db_session.add(task)
     db_session.commit()
 
@@ -149,7 +150,7 @@ async def update_tasks(request: Request, id: UUID, subject: Annotated[str, Form(
     
     db_session = Session()
     db_session.query(Task).filter(Task.id == id).update({'subject': subject, 'type': type,
-                                                         'task': task, 'date': date})
+                                                         'task': task, 'date': await conf_date(date)})
     db_session.commit()
 
     redirect_url = request.url_for("read_tasks")

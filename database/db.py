@@ -56,7 +56,7 @@ class Task(Base):
     subject = Column(String, nullable=False)
     type = Column(String, nullable=False)
     task = Column(String, nullable=False)
-    date = Column(DateTime, nullable=False)
+    date = Column(String, nullable=False)
 
 
 Base.metadata.create_all(engine)
